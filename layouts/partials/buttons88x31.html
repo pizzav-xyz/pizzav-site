@@ -1,0 +1,34 @@
+{{ $buttons := site.Data.buttons88x31.buttons }}
+{{ if $buttons }}
+<div class="buttons-88x31">
+  {{ range $buttons }}
+    {{ if .link }}
+      {{ if .src }}
+      <a href="{{ .link }}" target="_blank">
+        <img src="{{ .src }}" alt="{{ .alt }}" width="88" height="31" style="display:inline-block; border:none; margin:0; padding:0;">
+      </a>
+      {{ else }}
+      <a href="{{ .link }}" target="_blank">
+        <img src="/88x31/{{ .filename }}" alt="{{ .alt }}" width="88" height="31" style="display:inline-block; border:none; margin:0; padding:0;">
+      </a>
+      {{ end }}
+    {{ else }}
+      {{ if .src }}
+      <img src="{{ .src }}" alt="{{ .alt }}" width="88" height="31" style="display:inline-block; border:none; margin:0; padding:0;">
+      {{ else }}
+      <img src="/88x31/{{ .filename }}" alt="{{ .alt }}" width="88" height="31" style="display:inline-block; border:none; margin:0; padding:0;">
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+
+<style>
+.buttons-88x31 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px 0;
+  justify-content: center;
+}
+</style>
+{{ end }}

@@ -1,0 +1,79 @@
+[[buttons]]
+filename = "pizzav.png"
+alt = "me"
+link = "https://pizzav.xyz"
+
+[[buttons]]
+src = "https://lina.sh/assets/88x31/lina.gif"
+alt = "lina site"
+link = "https://lina.sh"
+
+[[buttons]]
+src = "https://lena.run/assets/88x31/me.gif"
+alt = "lena site"
+link = "https://lena.run"
+
+[[buttons]]
+src = "https://thisisraphael.at/8831_button.webp"
+alt = "MiauiKatze"
+link = "https://thisisraphael.at"
+
+[[buttons]]
+src = "https://jaisal.dev/88x31/atomicbyte.gif"
+alt = "the biter"
+link = "https://jaisal.dev"
+
+[[buttons]]
+src = "https://aliceweidel.gay/mybadge.gif"
+alt = "the loud"
+link = "https://aliceweidel.gay"
+
+[[buttons]]
+filename = "bitwarden.gif"
+alt = "bitwarden"
+link = "https://github.com/dani-garcia/vaultwarden"
+
+[[buttons]]
+filename = "zen-browser.png"
+alt = "peak browser"
+link = "https://zen-browser.app"
+
+[[buttons]]
+filename = "helix.png"
+alt = "helix"
+link = "https://helix-editor.com"
+
+[[buttons]]
+filename = "thunderbird.png"
+alt = "ermm thats the thunderbird logo not betterbird"
+link = "https://www.betterbird.eu"
+
+[[buttons]]
+filename = "arch.gif"
+alt = "i actually use cachyos"
+link = "https://cachyos.org"
+
+[[buttons]]
+filename = "ddg.png"
+alt = "duckduckgo"
+link = "https://duckduckgo.com/"
+
+[[buttons]]
+filename = "stop-slopcrosoft.gif"
+alt = "slopcrosoft"
+link = ""
+
+[[buttons]]
+filename = "piracy.gif"
+alt = "fmhy"
+link = "https://fmhy.net/"
+
+[[buttons]]
+filename = "lost-game.png"
+alt = "the game"
+link = ""
+
+[[buttons]]
+filename = "hollow-knight.png"
+alt = "the other game"
+link = "https://hollowknightsilksong.com/"
