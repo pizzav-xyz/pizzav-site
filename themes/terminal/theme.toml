@@ -1,0 +1,12 @@
+name = "Terminal"
+license = "MIT"
+licenselink = "https://github.com/your-profile/terminal/blob/main/LICENSE.md"
+description = "A minimal terminal-style Hugo theme"
+homepage = "https://github.com/your-profile/terminal"
+tags = ["terminal", "minimal", "dark", "monospace"]
+features = ["blog"]
+min_version = "0.41.0"
+
+[author]
+  name = "Your Name"
+  homepage = "https://your-site.com"
