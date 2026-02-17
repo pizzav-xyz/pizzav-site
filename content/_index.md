@@ -11,4 +11,4 @@ I selfhost some stuff like:
 - [copyparty](https://files.pizzav.xyz) - [GitHub](https://github.com/9001/copyparty)
 - [enclosed](https://notes.pizzav.xyz/) - [GitHub](https://github.com/CorentinTh/enclosed)
 - [mailcow](https://github.com/mailcow/mailcow-dockerized) - [Website](https://mailcow.email/)
-- [continuwuity](https://m.pizzav.xyz) - [forgejo](https://forgejo.ellis.link/continuwuation/continuwuity)
+- [continuwuity](https://m.pizzav.xyz) - [Forgejo](https://forgejo.ellis.link/continuwuation/continuwuity)
