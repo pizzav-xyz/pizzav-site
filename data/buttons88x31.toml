@@ -34,6 +34,11 @@ alt = "restartb"
 link = "https://restartb.xyz"
 
 [[buttons]]
+src = "https://boykisser.store/imgs/89x32/tom.png"
+alt = "potato car"
+link = "https://boykisser.store"
+
+[[buttons]]
 filename = "bitwarden.gif"
 alt = "bitwarden"
 link = "https://github.com/dani-garcia/vaultwarden"
