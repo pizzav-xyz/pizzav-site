@@ -39,6 +39,11 @@ alt = "potato car"
 link = "https://boykisser.store"
 
 [[buttons]]
+src = "https://egirljohn.gay/egirljohn.png"
+alt = "egirljohn"
+link = "https://egirljohn.gay"
+
+[[buttons]]
 filename = "bitwarden.gif"
 alt = "bitwarden"
 link = "https://github.com/dani-garcia/vaultwarden"
