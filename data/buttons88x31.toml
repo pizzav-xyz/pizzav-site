@@ -44,6 +44,11 @@ alt = "egirljohn"
 link = "https://egirljohn.gay"
 
 [[buttons]]
+src = "https://frko5000.com/assets/buttons/frko.png"
+alt = "froggo5000"
+link = "https://frko5000.com"
+
+[[buttons]]
 filename = "bitwarden.gif"
 alt = "bitwarden"
 link = "https://github.com/dani-garcia/vaultwarden"
