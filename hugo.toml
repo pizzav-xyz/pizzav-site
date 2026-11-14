@@ -5,3 +5,8 @@ theme = 'terminal'
 
 [params]
   FullWidthTheme = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
