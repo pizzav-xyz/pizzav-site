@@ -1,0 +1,6 @@
+{{- if eq (.Get "row") "true" -}}<li class="step-expand">{{- end -}}<details class="step-panel"{{ if eq (.Get "progress") "true" }} data-progress{{ end }}>
+  <summary><span class="step-panel__title">{{ .Get "title" | default "Details" }}</span></summary>
+  <div class="step-panel__body">
+{{ .Inner | markdownify | replaceRE "<a href=" "<a target=\"_blank\" rel=\"noopener\" href=" | safeHTML }}
+  </div>
+</details>{{- if eq (.Get "row") "true" -}}</li>{{- end -}}

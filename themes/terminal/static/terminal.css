@@ -385,3 +385,318 @@ th,
 button {
   font-weight: 600;
 }
+
+/* Step rows (E5-style numbered step rows) */
+ol.step-rows {
+  list-style: none;
+  counter-reset: step-row;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+ol.step-rows > li {
+  counter-increment: step-row;
+  position: relative;
+  margin: 10px 0;
+}
+
+/* Number badge: shared by link/text rows (on the li) and expandable rows (on the summary) */
+ol.step-rows > li::before,
+ol.step-rows > li.step-expand > details.step-details > summary::before {
+  content: counter(step-row);
+  position: absolute;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1;
+  z-index: 2;
+  pointer-events: none;
+}
+
+ol.step-rows > li.step-link::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+ol.step-rows > li.step-text::before {
+  top: 10px;
+}
+
+/* Expandable rows: the li badge is replaced by the badge on the summary */
+ol.step-rows > li.step-expand::before {
+  content: none;
+}
+
+/* Link rows */
+ol.step-rows > li.step-link > a {
+  display: block;
+  position: relative;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 10px 6px 44px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+ol.step-rows > li.step-link > a::after {
+  content: "→";
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: fit-content;
+  color: var(--accent);
+  line-height: 1;
+}
+
+ol.step-rows > li.step-link > a:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+ol.step-rows > li.step-link > a:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Plain instruction rows */
+ol.step-rows > li.step-text {
+  border: 1px solid var(--accent);
+  padding: 6px 10px 6px 44px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+ol.step-rows > li.step-text p {
+  margin: 0;
+}
+
+ol.step-rows > li.step-expand > details.step-details {
+  margin: 0;
+  border: 1px solid var(--accent);
+  background: transparent;
+}
+
+ol.step-rows > li.step-expand > details.step-details > summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 6px 30px 6px 44px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  cursor: pointer;
+  list-style: none;
+}
+
+ol.step-rows > li.step-expand > details.step-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+ol.step-rows > li.step-expand > details.step-details > summary::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+ol.step-rows > li.step-expand > details.step-details > summary::after {
+  content: "▸";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  line-height: 1;
+}
+
+ol.step-rows > li.step-expand > details.step-details[open] > summary::after {
+  content: "▾";
+}
+
+ol.step-rows > li.step-expand > details.step-details > summary:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+ol.step-rows > li.step-expand .step-details__title {
+  padding: 0;
+  margin: 0;
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+ol.step-rows > li.step-expand .step-details__content {
+  border-top: 1px solid var(--accent);
+  padding: 10px;
+  background: transparent;
+  color: var(--foreground);
+}
+
+ol.step-rows > li.step-expand .step-details__content > :first-child {
+  margin-top: 0;
+}
+
+ol.step-rows > li.step-expand .step-details__content > :last-child {
+  margin-bottom: 0;
+}
+
+/* Step panel (expandable step row with auto-fill link grid + optional progress check-boxes).
+   This file must stay linked after post.css in head.html: .step-panel__body > ul > li::before
+   { content: none } ties .post ul li:not(:empty)::before { content: "-" } on specificity (0,3,1)
+   and only wins on source order. */
+.step-panel {
+  counter-reset: step-panel;
+  margin: 10px 0;
+  border: 1px solid var(--accent);
+  background: transparent;
+}
+
+.step-panel > summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 6px 30px 6px 44px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  cursor: pointer;
+  list-style: none;
+}
+
+.step-panel > summary::-webkit-details-marker { display: none; }
+
+.step-panel > summary::before {
+  counter-increment: step-panel;
+  content: counter(step-panel);
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.step-panel > summary::after {
+  content: "▸";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.step-panel[open] > summary::after { content: "▾"; }
+
+.step-panel > summary:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+.step-panel .step-panel__title {
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.step-panel .step-panel__body {
+  border-top: 1px solid var(--accent);
+  padding: 10px;
+  color: var(--foreground);
+}
+
+.step-panel .step-panel__body > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.step-panel .step-panel__body > ul > li { margin: 0; }
+.step-panel .step-panel__body > ul > li::before { content: none; }
+
+.step-panel .step-panel__body > ul > li > a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+.step-panel .step-panel__body > ul > li > a:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.step-panel .step-panel__body > ul > li > a:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 684px) {
+  .step-panel .step-panel__body > ul { grid-template-columns: 1fr !important; }
+}
+
+/* Progress — each link button in a [data-progress] panel carries an empty check-box; fills solid when that link is opened */
+.step-panel[data-progress] .step-panel__body > ul > li > a {
+  position: relative;
+  padding-left: 42px;
+}
+
+.step-panel[data-progress] .step-panel__body > ul > li > a::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--accent);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.step-panel[data-progress] .step-panel__body > ul > li > a.is-opened::before {
+  padding: 2px;
+  background: var(--accent) content-box;
+}
+
+/* Progress done state — summary badge fills 45% amber wash; step number turns black */
+.step-panel[data-progress].is-done > summary::before {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--background);
+}
+
+.step-panel-reset {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}
+
+.step-panel-reset:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+/* Step panel as a numbered row inside ol.step-rows (row="true"):
+   the summary badge reads the list's step-row counter; the details collapses
+   to the li's own margins so the row spacing matches step-details rows. */
+ol.step-rows > li.step-expand > details.step-panel { margin: 0; }
+
+ol.step-rows > li.step-expand > details.step-panel > summary::before {
+  content: counter(step-row);
+}
+
+.step-panel .step-panel__body > p {
+  margin: 0 0 8px;
+}
+

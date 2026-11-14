@@ -1,0 +1,8 @@
+<li class="step-expand">
+  <details class="step-details"{{ if eq (.Get "open") "true" }} open{{ end }}>
+    <summary><span class="step-details__title">{{ .Get "title" | default "Details" }}</span></summary>
+    <div class="step-details__content">
+{{ .Inner | markdownify }}
+    </div>
+  </details>
+</li>

@@ -1,0 +1,4 @@
+{{- $href := .Get "href" -}}
+<li class="{{ if $href }}step-link{{ else }}step-text{{ end }}">
+{{- with $href -}}<a href="{{ . }}" target="_blank" rel="noopener">{{ $.Inner | markdownify }}</a>{{- else -}}{{ .Inner | markdownify }}{{- end -}}
+</li>

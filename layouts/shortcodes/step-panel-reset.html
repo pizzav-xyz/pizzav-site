@@ -1,0 +1,47 @@
+<button type="button" class="step-panel-reset" id="step-panel-reset">[ Reset progress ]</button>
+
+<script>
+(function () {
+  var KEY = 'step-panel-opened';
+  var opened;
+  try { opened = JSON.parse(localStorage.getItem(KEY) || '{}'); }
+  catch (e) { opened = {}; }
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel[data-progress]'));
+
+  function update(panel) {
+    var links = Array.prototype.slice.call(panel.querySelectorAll('.step-panel__body a'));
+    var done = links.filter(function (a) { return opened[a.href]; }).length;
+    var total = links.length;
+    panel.classList.toggle('is-done', total > 0 && done === total);
+    links.forEach(function (a) {
+      a.classList.toggle('is-opened', !!opened[a.href]);
+    });
+  }
+
+  panels.forEach(update);
+
+  panels.forEach(function (panel) {
+    panel.querySelectorAll('.step-panel__body a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        opened[a.href] = true;
+        try { localStorage.setItem(KEY, JSON.stringify(opened)); } catch (e) {}
+        panels.forEach(update);
+      });
+    });
+  });
+
+  window.addEventListener('pageshow', function () {
+    panels.forEach(update);
+  });
+
+  var reset = document.getElementById('step-panel-reset');
+  if (reset) {
+    reset.addEventListener('click', function () {
+      opened = {};
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      panels.forEach(update);
+    });
+  }
+})();
+</script>
