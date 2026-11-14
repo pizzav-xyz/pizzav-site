@@ -700,3 +700,103 @@ ol.step-rows > li.step-expand > details.step-panel > summary::before {
   margin: 0 0 8px;
 }
 
+/* ============================================================
+   lang-switch — {{< lang-switch >}} shortcode
+   Duotone: only --accent / --background, so every Terminal.css
+   colour scheme works. Pinned last so it wins over theme CSS.
+   ============================================================ */
+@property --pos { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.lang-switch {
+  --pad: 3px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
+  margin: 25px 0;
+  padding: var(--pad);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-weight: bold;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  -webkit-user-drag: none;
+  cursor: pointer;
+  transition: --pos 0.15s linear;
+}
+
+.lang-switch.left   { margin-right: auto; }
+.lang-switch.center { margin-left: auto; margin-right: auto; }
+.lang-switch.right  { margin-left: auto; }
+.lang-switch.is-dragging { transition: none; }
+
+.lang-switch__stop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  color: var(--accent);
+  text-decoration: none;
+  border-radius: var(--radius);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lang-switch__stop:hover { background: color-mix(in srgb, var(--accent) 15%, transparent); }
+.lang-switch__stop:focus-visible { z-index: 3; }
+
+/* the sliding block is the theme's .logo: solid accent, bold text in the background colour */
+.lang-switch__thumb {
+  position: absolute;
+  top: var(--pad);
+  bottom: var(--pad);
+  left: var(--pad);
+  width: calc((100% - 2 * var(--pad)) / 3);
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(calc(var(--pos) * 100%));
+  background: var(--accent);
+  color: var(--background);
+  border-radius: var(--radius);
+}
+.lang-switch__labels {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 300%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+  transform: translateX(calc(var(--pos) * -33.3333%));
+}
+
+/* the middle stop is a marker, not a target: inert, never lands under the thumb */
+.lang-switch__stop.is-auto {
+  cursor: default;
+}
+.lang-switch__stop.is-auto:hover { background: none; }
+
+/* icon: lucide "languages" (ISC license, lucide.dev) */
+.lang-switch__icon {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+.lang-switch__stop.is-auto .lang-switch__icon { width: 18px; height: 18px; }
+.lang-switch__labels .lang-switch__icon { width: 1em; height: 1em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lang-switch { transition: none; }
+}
+@media print {
+  .lang-switch { display: none; }
+}

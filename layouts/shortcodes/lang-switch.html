@@ -1,0 +1,119 @@
+{{- $left := .Get "left" | default "nl" -}}
+{{- $right := .Get "right" | default "en" -}}
+{{- $pos := .Get "position" | default "left" -}}
+{{- $current := .Get "current" | default "" -}}
+{{- $page := .Page.RelPermalink -}}
+{{- /* language variants live as <base>/<lang>/ subpages; strip the current lang segment so links stay flat */ -}}
+{{- $nlSuffix := printf "/%s/" $left -}}
+{{- $enSuffix := printf "/%s/" $right -}}
+{{- $base := $page -}}
+{{- if hasSuffix $page $nlSuffix -}}{{- $base = printf "%s/" (strings.TrimSuffix $nlSuffix $page) -}}{{- if not $current -}}{{- $current = "left" -}}{{- end -}}
+{{- else if hasSuffix $page $enSuffix -}}{{- $base = printf "%s/" (strings.TrimSuffix $enSuffix $page) -}}{{- if not $current -}}{{- $current = "right" -}}{{- end -}}{{- end -}}
+{{- $leftUrl := printf "%s%s/" $base $left -}}
+{{- $rightUrl := printf "%s%s/" $base $right -}}
+{{- $idx := 0 -}}
+{{- if eq $current "right" -}}{{- $idx = 2 -}}{{- end -}}
+<nav class="lang-switch {{ $pos }}" aria-label="Language" data-current="{{ $idx }}" data-left="{{ $left }}" data-right="{{ $right }}" data-left-url="{{ $leftUrl }}" data-right-url="{{ $rightUrl }}" style="--pos: {{ $idx }}">
+  <span class="lang-switch__thumb" aria-hidden="true">
+    <span class="lang-switch__labels"><span>{{ upper $left }}</span><svg class="lang-switch__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg><span>{{ upper $right }}</span></span>
+  </span>
+  <a class="lang-switch__stop" draggable="false" href="{{ $leftUrl }}" hreflang="{{ $left }}" data-lang="{{ $left }}"{{ if eq $idx 0 }} aria-current="true"{{ end }}>{{ upper $left }}</a>
+  <span class="lang-switch__stop is-auto" data-auto aria-disabled="true" title="Translate this page"><svg class="lang-switch__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Translate"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>
+  <a class="lang-switch__stop" draggable="false" href="{{ $rightUrl }}" hreflang="{{ $right }}" data-lang="{{ $right }}"{{ if eq $idx 2 }} aria-current="true"{{ end }}>{{ upper $right }}</a>
+</nav>
+<script>
+(function () {
+  var el = document.currentScript.previousElementSibling;
+  if (!el || !el.classList.contains("lang-switch")) return;
+  if (el.dataset.jsReady) return;
+  el.dataset.jsReady = "1";
+
+  var DRAG_THRESHOLD = 4;
+  var stops = el.querySelectorAll(".lang-switch__stop");
+  var index = parseInt(el.dataset.current, 10);
+  var pos = index, startX = 0, startPos = 0, down = false, dragging = false, suppressClick = false, unit = 1;
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function setPos(p) { pos = p; el.style.setProperty("--pos", p); }
+
+  /* magnetic snap toward the two real stops only; the middle is not a stop, so raw passes through undamped */
+  function magnet(raw) {
+    var n = clamp(Math.round(raw), 0, 2);
+    if (n === 1) return raw;
+    var f = raw - n, d = Math.min(0.5, Math.abs(f));
+    return n + f * (0.4 + 0.6 * Math.pow(2 * d, 1.5));
+  }
+  /* rubber-band past either end */
+  function rubber(raw) {
+    if (raw < 0) return Math.max(-0.3, raw * 0.25);
+    if (raw > 2) return Math.min(2.3, 2 + (raw - 2) * 0.25);
+    return raw;
+  }
+
+  el.addEventListener("dragstart", function (e) { e.preventDefault(); });
+  el.addEventListener("selectstart", function (e) { if (down) e.preventDefault(); });
+  for (var i = 0; i < stops.length; i++) stops[i].draggable = false;
+
+  el.addEventListener("pointerdown", function (e) {
+    if (e.button > 0) return;
+    down = true; dragging = false;
+    startX = e.clientX; startPos = pos;
+    unit = stops[0].getBoundingClientRect().width || 1;
+  });
+
+  el.addEventListener("pointermove", function (e) {
+    if (!down) return;
+    var dx = e.clientX - startX;
+    if (!dragging) {
+      if (Math.abs(dx) < DRAG_THRESHOLD) return;
+      dragging = true;
+      el.classList.add("is-dragging");
+      try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+    setPos(magnet(rubber(startPos + dx / unit)));
+  });
+
+  function release() {
+    if (!down) return;
+    down = false;
+    if (!dragging) return;            /* a tap: let the link navigate by itself */
+    dragging = false;
+    suppressClick = true;
+    setTimeout(function () { suppressClick = false; }, 0);
+    el.classList.remove("is-dragging");
+    /* commit to whichever real stop is nearer; the middle never wins */
+    commit(clamp(Math.round(pos), 0, 2) === 1 ? (pos < 1 ? 0 : 2) : clamp(Math.round(pos), 0, 2));
+  }
+  el.addEventListener("pointerup", release);
+  el.addEventListener("pointercancel", release);
+
+  function commit(i) {
+    if (i === index) { setPos(i); return; }
+    index = i;
+    setPos(i);
+    var url = i === 0 ? el.dataset.leftUrl : el.dataset.rightUrl;
+    if (url && url !== location.pathname) window.location.href = url;
+  }
+
+  for (var j = 0; j < stops.length; j++) {
+    (function (stop, i) {
+      if (stop.hasAttribute("data-auto")) {
+        stop.addEventListener("click", function (e) { e.preventDefault(); });
+        return;
+      }
+      stop.addEventListener("click", function (e) {
+        if (suppressClick) { e.preventDefault(); return; }
+        if (i === index) { e.preventDefault(); return; }
+        index = i; setPos(i);           /* the link itself navigates */
+      });
+      stop.addEventListener("keydown", function (e) {
+        var step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var next = stops[clamp(i + step, 0, 2)];
+        if (next && !next.hasAttribute("data-auto")) next.focus();
+      });
+    })(stops[j], j);
+  }
+})();
+</script>
