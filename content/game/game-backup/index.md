@@ -2,6 +2,8 @@
 title: "Game"
 date: 2026-01-03T23:32:00+01:00
 draft: false
+build:
+  list: never
 ---
 
 # Game
